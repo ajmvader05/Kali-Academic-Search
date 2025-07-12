@@ -1,16 +1,23 @@
-# comment - helps others understand the code
+# --- Data Section ---
 project_name = "Kali Academic Search"
-phase = 1
-
-print("Project Name:", project_name)
-print("Current Phase:", phase)
-print("---")
-# list of strings
 academic_engines = ["Google Scholar", "arXiv.org", "JSTOR", "PubMed Central"]
 
-print("Target Academic Engines:")
-for engine in academic_engines:
-	print("-", engine)
-print("---")
+# --- Function Definitions ---
+def display_startup_info():
+	"""Docstring - explains what a function does."""
+	print("Project Name:", project_name)
+	print("---")
+
+def list_target_engines():
+	"""Prints all engines in the academic_engines list."""
+	print("Target Academic Engines:")
+	for engine in academic_engines:
+		print("-", engine)
+	print ("---")
+
+# --- Main Execution ---
+# Where the program starts running
+display_startup_info()
+list_target_engines()
 print("Initalization complete.")
 
