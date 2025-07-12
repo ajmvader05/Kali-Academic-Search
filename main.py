@@ -1,39 +1,45 @@
-import requests #Import the library we installed with pip
+import requests
+from bs4 import BeautifulSoup
+
 # --- Data Section ---
 project_name = "Kali Academic Search"
-academic_engines = ["Google Scholar", "arXiv.org", "JSTOR", "PubMed Central"]
-test_url = "https://example.com"
+# Let's use a more complex page with lots of text
+wiki_url = "https://en.wikipedia.org/wiki/Python_(programming_language)"
+
 
 # --- Function Definitions ---
 def display_startup_info():
-	"""Docstring - explains what a function does."""
-	print("Project Name:", project_name)
-	print("---")
+    """This function prints the project's name."""
+    print("Project Name:", project_name)
+    print("---")
 
-def list_target_engines():
-	"""Prints all engines in the academic_engines list."""
-	print("Target Academic Engines:")
-	for engine in academic_engines:
-		print("-", engine)
-	print ("---")
-def ping_test_site(url):
-	"""
-	Connects to a URL and prints the status - core of a web request
-	"""
-	print(f"Pinging {url}...")
-	try:
-		response = requests.get(url, timeout=5)
-		print(f"Status Code: {response.status_code}")
-		if response.status_code == 200:
-			print("Connection sucessful.")
-	except requests.exceptions.RequestException as e:
-		print (f"Connection failed {e}")
-	print("---")
+def scrape_page_content(url):
+    """
+    Connects to a URL, parses the HTML, and extracts all paragraph text.
+    """
+    print(f"Scraping content from {url}...")
+    try:
+        response = requests.get(url, timeout=5)
+        response.raise_for_status() # Check for request errors
+
+        soup = BeautifulSoup(response.text, 'lxml')
+
+        # Find all <p> (paragraph) tags on the page
+        paragraphs = soup.find_all('p')
+
+        print(f"Found {len(paragraphs)} paragraph tags.")
+        print("---")
+
+        # Loop through each paragraph tag and print its clean text
+        for p in paragraphs:
+            print(p.get_text().strip()) # .strip() removes leading/trailing whitespace
+
+    except requests.exceptions.RequestException as e:
+        print(f"Connection failed: {e}")
+    print("---")
+
 
 # --- Main Execution ---
-# Where the program starts running
 display_startup_info()
-list_target_engines()
-ping_test_site(test_url)
-print("Initalization complete.")
-
+scrape_page_content(wiki_url)
+print("Scraping complete.")
